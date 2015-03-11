@@ -1,0 +1,8 @@
+node_modules
+.checkbuild
+.editorconfig
+.jscsrc
+.jshintignore
+.jshintrc
+.npmrc
+.nvmrc
