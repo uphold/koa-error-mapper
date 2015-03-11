@@ -1,0 +1,32 @@
+{
+  "name": "koa-error-handler",
+  "version": "0.0.1",
+  "description": "Backend Errors",
+  "main": "index.js",
+  "engines": {
+    "node": ">= v0.11.14"
+  },
+  "dependencies": {
+    "debug": "2.1.2",
+    "http": "0.0.0",
+    "lodash": "3.5.0",
+    "snake-case": "1.1.1",
+    "util": "0.10.3"
+  },
+  "devDependencies": {
+    "backend-tools": "git+ssh://git@github.com:bitreserve/backend-tools.git",
+    "co-mocha": "^1.1.0",
+    "github-changes": "0.0.16",
+    "koa": "0.18.1",
+    "mocha": "^2.2.1",
+    "should": "^5.1.0",
+    "validator": "3.33.0"
+  },
+  "scripts": {
+    "changelog": "./node_modules/.bin/github-changes -o bitreserve -r koa-error-handler -a --only-pulls --use-commit-body --title 'Changelog' --date-format '/ YYYY-MM-DD'",
+    "test": "./bin/scripts/test"
+  },
+  "author": "Bitreserve",
+  "license": "Proprietary",
+  "repository": "git@github.com:bitreserve/koa-error-handler"
+}
