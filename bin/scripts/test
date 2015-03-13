@@ -1,0 +1,13 @@
+#!/bin/bash
+
+ALL_TESTS='{test/*.js,test/**/**/*.js}'
+CMD='node ./node_modules/.bin/_mocha'
+
+FILES_PATTERN='\.(js)(\..+)?$'
+TEST=$({ git ls-files --others --exclude-standard; git diff --name-only --diff-filter=ACMRTUXB; } | grep -E $FILES_PATTERN | xargs grep -l '\.only')
+
+if [[ ! -n "$TEST" ]]; then
+  TEST=$ALL_TESTS;
+fi
+
+NODE_ENV=test ${CMD} -- $TEST;
