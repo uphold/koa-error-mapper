@@ -1,64 +1,76 @@
-# Koa Error Handler
+# koa-error-mapper
 
 [![build status][travis-image]][travis-url]
 
-Koa Error Handler is a middleware to handle and normalize your application errors.
+`koa-error-mapper` is a middleware to handle and normalize application errors.
 
 ## Installation
 
-* Download: [koa-error-handler](https://github.com/bitreserve/koa-error-handler)
-
-## Mappers
-
-Mappers will be responsible for handling errors and normalize the response.
-We provide a generic one that will handle every error the same way but you can add others to better fit your needs. You can achieve this by passing and object as argument with `key` being the error name and the `value` being the mapper responsible to handle it.
-
-```js
-module.exports = {
-  map: function(error) {
-    // Handle the error here.
-  	
-    return { code: 'custom_code', error: 'Custom Error' };
-  }
-};
+```sh
+npm install --save git+ssh://git@github.com/bitreserve/koa-error-mapper
 ```
-### Requirements
-
-Every mapper must have a `map` method which will receive the error and will only be called when the `error name` matches your configuration. The return value of your mapper will be assigned to the body.
 
 ## Usage
 
+### Mappers
+
+Mappers are responsible for handling errors and normalizing the response. A generic fallback mapper is included in case no custom mapper is available.
+
+The only interface for a mapper is a `map()` function. A mapper should return `undefined` if it is not capable or responsible for mapping a specific error.
+It must return an object with `status` and `body`. If not returned on the object, the value on the response will be `undefined` for precaution. It may also contain a `headers` property.
+
 ```js
-var CustomError = require('path/to/my/custom/error');
-var CustomMapper = require('path/to/my/custom/mapper');
-var koa = require('koa');
+module.exports = {
+  map: function(e) {
+    if (!(e instanceof CustomError)) {
+      return;
+    }
 
-var app = koa();
+    // Add your own custom logic here.
+    return { status: e.code, body: { message: e.message }, headers: { Foo: 'Bar' }};
+  }
+};
+```
 
-app.use(errorHandler({
-  CustomError: CustomMapper
-}));
+Now use the error handler and register `CustomMapper`:
+
+```js
+'use strict';
+
+let CustomError = require('path/to/my/custom/error');
+let CustomMapper = require('path/to/my/custom/mapper');
+let koa = require('koa');
+let app = koa();
+
+app.use(errorHandler([CustomMapper]);
 
 app.get('/', function *() {
-  throw new CustomError();
+  throw new CustomError(401, 'Ah-ah!');
 });
 
 app.listen(3000);
 ```
 
-### Result
+Result:
 
-```bash
-> GET /
+```sh
+GET /
 
-{ code: 'custom_code', error: 'Custom Error' }
+HTTP/1.1 401 Unauthorized
+Foo: Bar
+
+{ "message": "Ah-ah!" }
 ```
 
-## Running tests
+## Tests
 
 ```sh
 npm test
 ```
 
-[travis-image]: https://magnum.travis-ci.com/bitreserve/koa-error-handler.svg?token=dwsFqQ7vWTc2XyntMBxA&style=flat-square
-[travis-url]: https://magnum.travis-ci.com/bitreserve/koa-error-handler
+## License
+
+MIT
+
+[travis-image]: https://magnum.travis-ci.com/bitreserve/koa-error-mapper.svg?token=dwsFqQ7vWTc2XyntMBxA&style=flat-square
+[travis-url]: https://magnum.travis-ci.com/bitreserve/koa-error-mapper

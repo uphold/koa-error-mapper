@@ -1,32 +1,29 @@
 {
-  "name": "koa-error-handler",
+  "name": "koa-error-mapper",
   "version": "0.0.1",
-  "description": "Backend Errors",
+  "description": "koa error mapper",
   "main": "index.js",
   "engines": {
-    "node": ">= v0.11.14"
+    "iojs": ">= v1.0.0"
   },
   "dependencies": {
-    "debug": "2.1.2",
-    "http": "0.0.0",
-    "lodash": "3.5.0",
-    "snake-case": "1.1.1",
-    "util": "0.10.3"
+    "debug": "^2.1.0",
+    "lodash": "^3.5.0"
   },
   "devDependencies": {
-    "backend-tools": "git+ssh://git@github.com:bitreserve/backend-tools.git",
     "co-mocha": "^1.1.0",
-    "github-changes": "0.0.16",
-    "koa": "0.18.1",
+    "co-supertest": "^0.0.8",
+    "http-errors": "^1.3.1",
+    "koa": "^0.18.1",
     "mocha": "^2.2.1",
-    "should": "^5.1.0",
-    "validator": "3.33.0"
+    "should": "^5.0.1",
+    "supertest": "^0.15.0"
   },
   "scripts": {
-    "changelog": "./node_modules/.bin/github-changes -o bitreserve -r koa-error-handler -a --only-pulls --use-commit-body --title 'Changelog' --date-format '/ YYYY-MM-DD'",
-    "test": "./bin/scripts/test"
+    "changelog": "./node_modules/.bin/github-changes -o bitreserve -r koa-error-mapper -a --only-pulls --use-commit-body --title 'Changelog' --date-format '/ YYYY-MM-DD'",
+    "test": "./node_modules/.bin/mocha test/*_test.js test/**/*_test.js"
   },
   "author": "Bitreserve",
   "license": "Proprietary",
-  "repository": "git@github.com:bitreserve/koa-error-handler"
+  "repository": "git@github.com:bitreserve/koa-error-mapper"
 }
