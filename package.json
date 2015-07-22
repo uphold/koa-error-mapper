@@ -1,6 +1,6 @@
 {
   "name": "koa-error-mapper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "koa error mapper",
   "main": "index.js",
   "engines": {
