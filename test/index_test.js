@@ -4,22 +4,22 @@
  * Module dependencies.
  */
 
-let errorHandler = require('../');
+let errorMapper = require('../');
 let koa = require('koa');
 let request = require('co-supertest');
 let noop = function() {};
 let util = require('util');
 
 /**
- * Test `ErrorHandler` middleware.
+ * Test `ErrorMapper` middleware.
  */
 
-describe('ErrorHandler', function() {
+describe('ErrorMapper', function() {
   it('should return http error mapping if error is created using koa\'s `ctx.throw`', function *() {
     let app = koa();
 
     app.on('error', noop);
-    app.use(errorHandler());
+    app.use(errorMapper());
     app.use(function *() {
       this.throw(403);
     });
@@ -35,7 +35,7 @@ describe('ErrorHandler', function() {
     let app = koa();
 
     app.on('error', noop);
-    app.use(errorHandler());
+    app.use(errorMapper());
     app.use(function *() {
       throw new Error();
     });
@@ -51,7 +51,7 @@ describe('ErrorHandler', function() {
     let app = koa();
 
     app.on('error', noop);
-    app.use(errorHandler());
+    app.use(errorMapper());
     app.use(function *() {
       throw new CustomError();
     });
@@ -69,7 +69,7 @@ describe('ErrorHandler', function() {
     function FooError() {}
 
     app.on('error', noop);
-    app.use(errorHandler([{
+    app.use(errorMapper([{
       map: function(e) {
         if (!(e instanceof FooError)) {
           return;
@@ -92,7 +92,7 @@ describe('ErrorHandler', function() {
     let app = koa();
 
     app.on('error', noop);
-    app.use(errorHandler([customErrorMapper()]));
+    app.use(errorMapper([customErrorMapper()]));
 
     app.use(function *() {
       throw new CustomError(401, 'Foo');
@@ -110,7 +110,7 @@ describe('ErrorHandler', function() {
     let called = false;
 
     app.on('error', noop);
-    app.use(errorHandler([customErrorMapper(), {
+    app.use(errorMapper([customErrorMapper(), {
       map: function(e) {
         called = true;
       }
@@ -134,7 +134,7 @@ describe('ErrorHandler', function() {
     let app = koa();
 
     app.on('error', noop);
-    app.use(errorHandler([{
+    app.use(errorMapper([{
       map: function(e) {
         if (!(e instanceof CustomError)) {
           return;
@@ -159,7 +159,7 @@ describe('ErrorHandler', function() {
     let app = koa();
 
     app.on('error', noop);
-    app.use(errorHandler());
+    app.use(errorMapper());
 
     yield request(app.listen())
       .get('/')
@@ -176,7 +176,7 @@ describe('ErrorHandler', function() {
       called = true;
     });
 
-    app.use(errorHandler());
+    app.use(errorMapper());
     app.use(function *() {
       throw new Error();
     });
