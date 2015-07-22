@@ -32,7 +32,7 @@ module.exports = {
 };
 ```
 
-Now use the error handler and register `CustomMapper`:
+Now use the error mapper and register `CustomMapper`:
 
 ```js
 'use strict';
@@ -42,7 +42,7 @@ let CustomMapper = require('path/to/my/custom/mapper');
 let koa = require('koa');
 let app = koa();
 
-app.use(errorHandler([CustomMapper]);
+app.use(errorMapper([CustomMapper]);
 
 app.get('/', function *() {
   throw new CustomError(401, 'Ah-ah!');

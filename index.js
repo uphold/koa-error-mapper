@@ -5,13 +5,13 @@
  */
 
 let _ = require('lodash');
-let debug = require('debug')('bitreserve:koa-error-handler');
+let debug = require('debug')('bitreserve:koa-error-mapper');
 let genericErrorMapper = require('./mappers/generic-error-mapper');
 let httpErrorMapper = require('./mappers/http-error-mapper');
 let util = require('util');
 
 /**
- * Export `ErrorHandlerMiddleware`.
+ * Export `ErrorMapperMiddleware`.
  */
 
 module.exports = function(mappers) {
