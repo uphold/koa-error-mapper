@@ -6,8 +6,8 @@
 
 let errorMapper = require('../');
 let koa = require('koa');
-let request = require('co-supertest');
 let noop = function() {};
+let request = require('co-supertest');
 let util = require('util');
 
 /**
@@ -16,9 +16,10 @@ let util = require('util');
 
 describe('ErrorMapper', function() {
   it('should return http error mapping if error is created using koa\'s `ctx.throw`', function *() {
-    let app = koa();
+    const app = koa();
 
     app.on('error', noop);
+
     app.use(errorMapper());
     app.use(function *() {
       this.throw(403);
@@ -32,9 +33,10 @@ describe('ErrorMapper', function() {
   });
 
   it('should return generic mapping if no custom mapper is available', function *() {
-    let app = koa();
+    const app = koa();
 
     app.on('error', noop);
+
     app.use(errorMapper());
     app.use(function *() {
       throw new Error();
@@ -48,9 +50,8 @@ describe('ErrorMapper', function() {
   });
 
   it('should return generic mapping if error is subclassed and no custom mapper is available', function *() {
-    let app = koa();
+    const app = koa();
 
-    app.on('error', noop);
     app.use(errorMapper());
     app.use(function *() {
       throw new CustomError();
@@ -64,11 +65,10 @@ describe('ErrorMapper', function() {
   });
 
   it('should return generic mapping as a fallback if custom mappers are available but do not apply', function *() {
-    let app = koa();
+    const app = koa();
 
     function FooError() {}
 
-    app.on('error', noop);
     app.use(errorMapper([{
       map: function(e) {
         if (!(e instanceof FooError)) {
@@ -89,10 +89,10 @@ describe('ErrorMapper', function() {
   });
 
   it('should return custom mapping if a custom `mapper` is available', function *() {
-    let app = koa();
+    const app = koa();
 
     app.on('error', noop);
-    app.use(errorMapper([customErrorMapper()]));
+    app.use(errorMapper([customErrorMapper]));
 
     app.use(function *() {
       throw new CustomError(401, 'Foo');
@@ -106,11 +106,10 @@ describe('ErrorMapper', function() {
   });
 
   it('should return the first custom mapping available', function *() {
-    let app = koa();
+    const app = koa();
     let called = false;
 
-    app.on('error', noop);
-    app.use(errorMapper([customErrorMapper(), {
+    app.use(errorMapper([customErrorMapper, {
       map: function(e) {
         called = true;
       }
@@ -130,10 +129,36 @@ describe('ErrorMapper', function() {
       .end();
   });
 
-  it('should return headers of custom mapped errors if headers are available', function *() {
-    let app = koa();
+  it('should allow recovering from mapping errors', function *() {
+    const app = koa();
 
     app.on('error', noop);
+
+    app.use(errorMapper([{
+      map: function(e) {
+        if (e.message !== 'foobar') {
+          return;
+        }
+
+        // Re-throw `Error` as `CustomError`.
+        throw new CustomError(401, 'Foo');
+      }
+    }, customErrorMapper]));
+
+    app.use(function *() {
+      throw new Error('foobar');
+    });
+
+    yield request(app.listen())
+      .get('/')
+      .expect(401)
+      .expect({ message: 'Foo' })
+      .end();
+  });
+
+  it('should return headers of custom mapped errors if headers are available', function *() {
+    const app = koa();
+
     app.use(errorMapper([{
       map: function(e) {
         if (!(e instanceof CustomError)) {
@@ -156,9 +181,8 @@ describe('ErrorMapper', function() {
   });
 
   it('should return mapped `not_found` error by default', function *() {
-    let app = koa();
+    const app = koa();
 
-    app.on('error', noop);
     app.use(errorMapper());
 
     yield request(app.listen())
@@ -169,7 +193,7 @@ describe('ErrorMapper', function() {
   });
 
   it('should emit an `error` event on app', function *() {
-    let app = koa();
+    const app = koa();
     let called = false;
 
     app.on('error', function() {
@@ -212,14 +236,12 @@ util.inherits(CustomError, Error);
  * Mapper for `CustomError`.
  */
 
-function customErrorMapper() {
-  return {
-    map: function(e) {
-      if (!(e instanceof CustomError)) {
-        return;
-      }
-
-      return { status: e.code, body: { message: e.message }};
+const customErrorMapper = {
+  map: function(e) {
+    if (!(e instanceof CustomError)) {
+      return;
     }
-  };
-}
+
+    return { status: e.code, body: { message: e.message }};
+  }
+};

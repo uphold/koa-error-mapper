@@ -17,6 +17,20 @@ let util = require('util');
 module.exports = function(mappers) {
   mappers = (mappers || []).concat([httpErrorMapper, genericErrorMapper]);
 
+  function map(e) {
+    let mapping;
+
+    for (const mapper of mappers) {
+      mapping = mapper.map(e);
+
+      if (undefined !== mapping) {
+        break;
+      }
+    }
+
+    return mapping;
+  }
+
   return function *errors(next) {
     try {
       yield* next;
@@ -28,15 +42,11 @@ module.exports = function(mappers) {
     } catch (e) {
       let mapping;
 
-      // Custom error mappers.
-      _.forEach(mappers, function(mapper) {
-        mapping = mapper.map(e);
-
-        // Break the loop if a mapping is returned.
-        if (mapping) {
-          return false;
-        }
-      });
+      try {
+        mapping = map(e);
+      } catch (e) {
+        mapping = map(e);
+      }
 
       // Update response.
       this.body = mapping.body;
