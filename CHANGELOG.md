@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.1.0 / 2016-04-26
+- [#15](https://github.com/bitreserve/koa-error-mapper/pull/15) Add support for recovering from mapping errors (@ruimarinho)
+
 ### 1.0.1 / 2015-07-22
 - [#13](https://github.com/bitreserve/koa-error-mapper/pull/13) Rename all instances of `handler` to `mapper` (@nunofgs)
 
