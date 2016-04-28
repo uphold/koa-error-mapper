@@ -1,14 +1,10 @@
 'use strict';
 
 /**
- * `Error` mapper.
+ * Fallback error mapper.
  */
 
 module.exports.map = function(e) {
-  if (!(e instanceof Error)) {
-    return;
-  }
-
   return {
     body: {
       code: 'internal_server_error',
