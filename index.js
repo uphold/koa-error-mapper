@@ -5,7 +5,6 @@
  */
 
 let _ = require('lodash');
-let debug = require('debug')('bitreserve:koa-error-mapper');
 let fallbackErrorMapper = require('./mappers/fallback-error-mapper');
 let httpErrorMapper = require('./mappers/http-error-mapper');
 let util = require('util');
@@ -55,9 +54,6 @@ module.exports = function(mappers) {
       if (mapping.headers) {
         this.set(mapping.headers);
       }
-
-      // Debug mapping.
-      debug(util.inspect(mapping, { depth: 10 }));
 
       // Emit error.
       this.app.emit('error', e, this);
