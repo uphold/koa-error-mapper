@@ -6,7 +6,7 @@
 
 let _ = require('lodash');
 let debug = require('debug')('bitreserve:koa-error-mapper');
-let genericErrorMapper = require('./mappers/generic-error-mapper');
+let fallbackErrorMapper = require('./mappers/fallback-error-mapper');
 let httpErrorMapper = require('./mappers/http-error-mapper');
 let util = require('util');
 
@@ -15,7 +15,7 @@ let util = require('util');
  */
 
 module.exports = function(mappers) {
-  mappers = (mappers || []).concat([httpErrorMapper, genericErrorMapper]);
+  mappers = (mappers || []).concat([httpErrorMapper, fallbackErrorMapper]);
 
   function map(e) {
     let mapping;

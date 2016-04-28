@@ -64,7 +64,7 @@ describe('ErrorMapper', function() {
       .end();
   });
 
-  it('should return generic mapping as a fallback if custom mappers are available but do not apply', function *() {
+  it('should return fallback error mapping if custom mappers are available but do not apply', function *() {
     const app = koa();
 
     function FooError() {}
