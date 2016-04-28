@@ -192,7 +192,47 @@ describe('ErrorMapper', function() {
       .end();
   });
 
-  it('should emit an `error` event on app', function *() {
+  it('should not emit an `error` event on app if mapping status is < 500', function *() {
+    const app = koa();
+
+    function HttpError(status) {
+      this.status = status;
+      this.expose = false;
+    }
+
+    HttpError.prototype.expose = function() {
+      return this.expose;
+    };
+
+    HttpError.prototype.status = function() {
+      return this.status;
+    }
+
+    HttpError.prototype.statusCode = function() {
+      return this.status;
+    }
+
+    let called = false;
+
+    app.on('error', function() {
+      called = true;
+    });
+
+    app.use(errorMapper());
+    app.use(function *() {
+      throw new HttpError(429);
+    });
+
+    yield request(app.listen())
+      .get('/')
+      .expect(429)
+      .expect(function() {
+        called.should.be.false;
+      })
+      .end();
+  });
+
+  it('should emit an `error` event on app if mapping status is >= 500', function *() {
     const app = koa();
     let called = false;
 

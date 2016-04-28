@@ -55,8 +55,9 @@ module.exports = function(mappers) {
         this.set(mapping.headers);
       }
 
-      // Emit error.
-      this.app.emit('error', e, this);
+      if (mapping.status >= 500) {
+        this.app.emit('error', e, this);
+      }
     }
   };
 };
