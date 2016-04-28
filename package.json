@@ -6,9 +6,6 @@
   "engines": {
     "iojs": ">= v1.0.0"
   },
-  "dependencies": {
-    "lodash": "^3.5.0"
-  },
   "devDependencies": {
     "co-mocha": "^1.1.0",
     "co-supertest": "^0.0.8",

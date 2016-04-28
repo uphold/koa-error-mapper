@@ -4,7 +4,6 @@
  * Module dependencies.
  */
 
-let _ = require('lodash');
 let fallbackErrorMapper = require('./mappers/fallback-error-mapper');
 let httpErrorMapper = require('./mappers/http-error-mapper');
 let util = require('util');

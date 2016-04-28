@@ -6,8 +6,6 @@
 
 const STATUS_CODE_TO_NAME = require('http').STATUS_CODES;
 
-let _ = require('lodash');
-
 /**
  * `Error` mapper.
  */
@@ -16,13 +14,13 @@ let _ = require('lodash');
 module.exports.map = function(e) {
   let proto = Object.getPrototypeOf(e);
 
-  if (!(_.has(proto, 'expose') && _.has(proto, 'status') && _.has(proto, 'statusCode') )) {
+  if (!(proto.hasOwnProperty('expose') && proto.hasOwnProperty('status') && proto.hasOwnProperty('statusCode') )) {
     return;
   }
 
   return {
     body: {
-      code: _.snakeCase(STATUS_CODE_TO_NAME[e.status]),
+      code: STATUS_CODE_TO_NAME[e.status].replace(/\s+/g, '_').toLowerCase(),
       message: e.expose ? e.message : STATUS_CODE_TO_NAME[e.status]
     },
     status: e.status
