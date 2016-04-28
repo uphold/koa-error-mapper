@@ -4,7 +4,7 @@
  * Fallback error mapper.
  */
 
-module.exports.map = function(e) {
+module.exports.map = function() {
   return {
     body: {
       code: 'internal_server_error',

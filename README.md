@@ -16,10 +16,9 @@ npm install --save git+ssh://git@github.com/bitreserve/koa-error-mapper
 
 Mappers are responsible for handling errors and normalizing the response. A generic fallback mapper is included in case no custom mapper is available.
 
-The only interface for a mapper is a `map()` function. A mapper should return `undefined` if it is not capable or responsible for mapping a specific error.
-It must return an object with `status` and `body`. If not returned on the object, the value on the response will be `undefined` for precaution. It may also contain a `headers` property.
+The only interface for a mapper is a `map()` function. A mapper should return `undefined` if it is not capable or responsible for mapping a specific error. It must return an object with `status` and `body`. If not returned on the object, the value on the response will be `undefined` for precaution. It may also contain a `headers` property.
 
-```js
+```javascript
 module.exports = {
   map: function(e) {
     if (!(e instanceof CustomError)) {
@@ -34,7 +33,7 @@ module.exports = {
 
 Now use the error mapper and register `CustomMapper`:
 
-```js
+```javascript
 'use strict';
 
 let CustomError = require('path/to/my/custom/error');
@@ -66,6 +65,12 @@ Foo: Bar
 
 ```sh
 npm test
+```
+
+## Release
+
+```sh
+npm version [<newversion> | major | minor | patch] -m "Release %s"
 ```
 
 ## License

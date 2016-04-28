@@ -1,25 +1,52 @@
 {
   "name": "koa-error-mapper",
-  "version": "1.1.0",
-  "description": "koa error mapper",
+  "version": "1.0.0",
+  "description": "An error mapper for Koa applications",
+  "keywords": [
+    "error",
+    "koa",
+    "mappers",
+    "mapping"
+  ],
+  "homepage": "https://github.com/uphold/koa-error-mapper",
+  "bugs": "https://github.com/uphold/koa-error-mapper/issues",
+  "license": "MIT",
+  "author": "Uphold",
   "main": "index.js",
-  "engines": {
-    "iojs": ">= v1.0.0"
-  },
-  "devDependencies": {
-    "co-mocha": "^1.1.0",
-    "co-supertest": "^0.0.8",
-    "http-errors": "^1.3.1",
-    "koa": "^0.18.1",
-    "mocha": "^2.2.1",
-    "should": "^5.0.1",
-    "supertest": "^0.15.0"
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:uphold/koa-error-mapper"
   },
   "scripts": {
-    "changelog": "./node_modules/.bin/github-changes -o bitreserve -r koa-error-mapper -a --only-pulls --use-commit-body --title 'Changelog' --date-format '/ YYYY-MM-DD'",
-    "test": "./node_modules/.bin/mocha test/*_test.js test/**/*_test.js"
+    "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
+    "lint": "eslint . && jscs .",
+    "test": "mocha $npm_package_options_mocha",
+    "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
-  "author": "Bitreserve",
-  "license": "Proprietary",
-  "repository": "git@github.com:bitreserve/koa-error-mapper"
+  "devDependencies": {
+    "babel-eslint": "^6.0.4",
+    "co-mocha": "^1.1.0",
+    "co-supertest": "^0.0.8",
+    "eslint": "^2.8.0",
+    "eslint-config-seegno": "^4.0.0",
+    "eslint-plugin-babel": "^3.2.0",
+    "eslint-plugin-sort-class-members": "^1.0.1",
+    "http-errors": "^1.3.1",
+    "jscs": "^2.11.0",
+    "jscs-config-seegno": "^2.0.0",
+    "koa": "^0.18.1",
+    "mocha": "^2.2.1",
+    "pre-commit": "^1.1.2",
+    "should": "^8.3.1",
+    "supertest": "^0.15.0"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "options": {
+    "mocha": "--recursive --require co-mocha --require should"
+  },
+  "pre-commit": [
+    "lint"
+  ]
 }

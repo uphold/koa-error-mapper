@@ -10,11 +10,10 @@ const STATUS_CODE_TO_NAME = require('http').STATUS_CODES;
  * `Error` mapper.
  */
 
-
 module.exports.map = function(e) {
-  let proto = Object.getPrototypeOf(e);
+  const proto = Object.getPrototypeOf(e);
 
-  if (!(proto.hasOwnProperty('expose') && proto.hasOwnProperty('status') && proto.hasOwnProperty('statusCode') )) {
+  if (!(proto.hasOwnProperty('expose') && proto.hasOwnProperty('status') && proto.hasOwnProperty('statusCode'))) {
     return;
   }
 
