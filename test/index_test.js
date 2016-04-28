@@ -4,17 +4,53 @@
  * Module dependencies.
  */
 
-let errorMapper = require('../');
-let koa = require('koa');
-let noop = function() {};
-let request = require('co-supertest');
-let util = require('util');
+const errorMapper = require('../');
+const koa = require('koa');
+const request = require('co-supertest');
+const util = require('util');
+
+/**
+ * Noop function.
+ */
+
+function noop() {}
+
+/**
+ * `CustomError` constructor.
+ */
+
+function CustomError(code, message) {
+  Error.call(this);
+
+  this.code = code;
+  this.message = message;
+}
+
+/**
+ * Inherit from `Error`.
+ */
+
+util.inherits(CustomError, Error);
+
+/**
+ * Mapper for `CustomError`.
+ */
+
+const customErrorMapper = {
+  map(e) {
+    if (!(e instanceof CustomError)) {
+      return;
+    }
+
+    return { body: { message: e.message }, status: e.code };
+  }
+};
 
 /**
  * Test `ErrorMapper` middleware.
  */
 
-describe('ErrorMapper', function() {
+describe('ErrorMapper', () => {
   it('should return http error mapping if error is created using koa\'s `ctx.throw`', function *() {
     const app = koa();
 
@@ -70,7 +106,7 @@ describe('ErrorMapper', function() {
     function FooError() {}
 
     app.use(errorMapper([{
-      map: function(e) {
+      map(e) {
         if (!(e instanceof FooError)) {
           return;
         }
@@ -110,7 +146,7 @@ describe('ErrorMapper', function() {
     let called = false;
 
     app.use(errorMapper([customErrorMapper, {
-      map: function(e) {
+      map() {
         called = true;
       }
     }]));
@@ -123,8 +159,8 @@ describe('ErrorMapper', function() {
       .get('/')
       .expect(401)
       .expect({ message: 'Foo' })
-      .expect(function() {
-        called.should.be.false;
+      .expect(() => {
+        called.should.be.false();
       })
       .end();
   });
@@ -135,7 +171,7 @@ describe('ErrorMapper', function() {
     app.on('error', noop);
 
     app.use(errorMapper([{
-      map: function(e) {
+      map(e) {
         if (e.message !== 'foobar') {
           return;
         }
@@ -160,12 +196,12 @@ describe('ErrorMapper', function() {
     const app = koa();
 
     app.use(errorMapper([{
-      map: function(e) {
+      map(e) {
         if (!(e instanceof CustomError)) {
           return;
         }
 
-        return { status: e.code, headers: { Foo: 'Bar' }};
+        return { headers: { Foo: 'Bar' }, status: e.code };
       }
     }]));
 
@@ -200,21 +236,21 @@ describe('ErrorMapper', function() {
       this.expose = false;
     }
 
-    HttpError.prototype.expose = function() {
+    HttpError.prototype.expose = () => {
       return this.expose;
     };
 
-    HttpError.prototype.status = function() {
+    HttpError.prototype.status = () => {
       return this.status;
-    }
+    };
 
-    HttpError.prototype.statusCode = function() {
+    HttpError.prototype.statusCode = () => {
       return this.status;
-    }
+    };
 
     let called = false;
 
-    app.on('error', function() {
+    app.on('error', () => {
       called = true;
     });
 
@@ -226,8 +262,8 @@ describe('ErrorMapper', function() {
     yield request(app.listen())
       .get('/')
       .expect(429)
-      .expect(function() {
-        called.should.be.false;
+      .expect(() => {
+        called.should.be.false();
       })
       .end();
   });
@@ -236,7 +272,7 @@ describe('ErrorMapper', function() {
     const app = koa();
     let called = false;
 
-    app.on('error', function() {
+    app.on('error', () => {
       called = true;
     });
 
@@ -248,40 +284,9 @@ describe('ErrorMapper', function() {
     yield request(app.listen())
       .get('/')
       .expect(500)
-      .expect(function() {
-        called.should.be.true;
+      .expect(() => {
+        called.should.be.true();
       })
       .end();
   });
 });
-
-/**
- * `CustomError` constructor.
- */
-
-function CustomError(code, message) {
-  Error.call(this);
-
-  this.code = code;
-  this.message = message;
-}
-
-/**
- * Inherit from `Error`.
- */
-
-util.inherits(CustomError, Error);
-
-/**
- * Mapper for `CustomError`.
- */
-
-const customErrorMapper = {
-  map: function(e) {
-    if (!(e instanceof CustomError)) {
-      return;
-    }
-
-    return { status: e.code, body: { message: e.message }};
-  }
-};

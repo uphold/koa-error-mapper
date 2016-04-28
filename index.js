@@ -4,9 +4,8 @@
  * Module dependencies.
  */
 
-let fallbackErrorMapper = require('./mappers/fallback-error-mapper');
-let httpErrorMapper = require('./mappers/http-error-mapper');
-let util = require('util');
+const fallbackErrorMapper = require('./mappers/fallback-error-mapper');
+const httpErrorMapper = require('./mappers/http-error-mapper');
 
 /**
  * Export `ErrorMapperMiddleware`.
@@ -21,7 +20,7 @@ module.exports = function(mappers) {
     for (const mapper of mappers) {
       mapping = mapper.map(e);
 
-      if (undefined !== mapping) {
+      if (mapping !== undefined) {
         break;
       }
     }
@@ -34,7 +33,7 @@ module.exports = function(mappers) {
       yield* next;
 
       // Force the default 404 to be a proper JSON response.
-      if (this.status === 404 && undefined === this.response.body) {
+      if (this.status === 404 && this.response.body === undefined) {
         this.throw(404);
       }
     } catch (e) {
