@@ -1,10 +1,26 @@
 {
   "name": "koa-error-mapper",
-  "version": "1.1.0",
-  "description": "koa error mapper",
+  "version": "1.0.0",
+  "description": "An error mapper for Koa applications",
+  "keywords": [
+    "error",
+    "koa",
+    "mappers",
+    "mapping"
+  ],
+  "homepage": "https://github.com/uphold/koa-error-mapper",
+  "bugs": "https://github.com/uphold/koa-error-mapper/issues",
+  "license": "MIT",
+  "author": "Uphold",
   "main": "index.js",
-  "engines": {
-    "iojs": ">= v1.0.0"
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:uphold/koa-error-mapper"
+  },
+  "scripts": {
+    "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
+    "test": "mocha $npm_package_options_mocha",
+    "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
   "devDependencies": {
     "co-mocha": "^1.1.0",
@@ -15,11 +31,10 @@
     "should": "^5.0.1",
     "supertest": "^0.15.0"
   },
-  "scripts": {
-    "changelog": "./node_modules/.bin/github-changes -o bitreserve -r koa-error-mapper -a --only-pulls --use-commit-body --title 'Changelog' --date-format '/ YYYY-MM-DD'",
-    "test": "./node_modules/.bin/mocha test/*_test.js test/**/*_test.js"
+  "engines": {
+    "node": ">=4"
   },
-  "author": "Bitreserve",
-  "license": "Proprietary",
-  "repository": "git@github.com:bitreserve/koa-error-mapper"
+  "options": {
+    "mocha": "--recursive --require co-mocha --require should"
+  }
 }
