@@ -75,7 +75,7 @@ npm version [<newversion> | major | minor | patch] -m "Release %s"
 
 ## License
 
-MIT
+Private.
 
 [travis-image]: https://magnum.travis-ci.com/bitreserve/koa-error-mapper.svg?token=dwsFqQ7vWTc2XyntMBxA&style=flat-square
 [travis-url]: https://magnum.travis-ci.com/bitreserve/koa-error-mapper
