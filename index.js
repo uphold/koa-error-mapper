@@ -53,9 +53,7 @@ module.exports = function(mappers) {
         this.set(mapping.headers);
       }
 
-      if (mapping.status >= 500) {
-        this.app.emit('error', e, this);
-      }
+      this.app.emit('error', e, this);
     }
   };
 };
