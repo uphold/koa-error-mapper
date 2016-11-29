@@ -7,7 +7,7 @@
 ## Installation
 
 ```sh
-npm install --save git+ssh://git@github.com/bitreserve/koa-error-mapper
+npm install --save git+ssh://git@github.com/uphold/koa-error-mapper
 ```
 
 ## Usage
@@ -77,5 +77,5 @@ npm version [<newversion> | major | minor | patch] -m "Release %s"
 
 MIT
 
-[travis-image]: https://magnum.travis-ci.com/bitreserve/koa-error-mapper.svg?token=dwsFqQ7vWTc2XyntMBxA&style=flat-square
-[travis-url]: https://magnum.travis-ci.com/bitreserve/koa-error-mapper
+[travis-image]: https://magnum.travis-ci.com/uphold/koa-error-mapper.svg?token=dwsFqQ7vWTc2XyntMBxA&style=flat-square
+[travis-url]: https://magnum.travis-ci.com/uphold/koa-error-mapper
