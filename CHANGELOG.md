@@ -1,5 +1,14 @@
 # Changelog
 
+## [v3.0.0](https://github.com/uphold/koa-error-mapper/tree/v3.0.0) (2016-12-29)
+[Full Changelog](https://github.com/uphold/koa-error-mapper/compare/v2.0.0...v3.0.0)
+
+**Merged pull requests:**
+
+- Update bitreserve URLs [\#23](https://github.com/uphold/koa-error-mapper/pull/23) ([rplopes](https://github.com/rplopes))
+- Update linting [\#22](https://github.com/uphold/koa-error-mapper/pull/22) ([rplopes](https://github.com/rplopes))
+- Emit all errors [\#21](https://github.com/uphold/koa-error-mapper/pull/21) ([rplopes](https://github.com/rplopes))
+
 ## [v2.0.0](https://github.com/uphold/koa-error-mapper/tree/v2.0.0) (2016-04-28)
 [Full Changelog](https://github.com/uphold/koa-error-mapper/compare/v1.1.0...v2.0.0)
 
