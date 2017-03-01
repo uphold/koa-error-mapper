@@ -28,13 +28,13 @@ module.exports = function(mappers) {
     return mapping;
   }
 
-  return function *errors(next) {
+  return async function errors(ctx, next) {
     try {
-      yield* next;
+      await next();
 
       // Force the default 404 to be a proper JSON response.
-      if (this.status === 404 && this.response.body === undefined) {
-        this.throw(404);
+      if (ctx.status === 404 && ctx.response.body === undefined) {
+        ctx.throw(404);
       }
     } catch (e) {
       let mapping;
@@ -46,14 +46,14 @@ module.exports = function(mappers) {
       }
 
       // Update response.
-      this.body = mapping.body;
-      this.status = mapping.status;
+      ctx.body = mapping.body;
+      ctx.status = mapping.status;
 
       if (mapping.headers) {
-        this.set(mapping.headers);
+        ctx.set(mapping.headers);
       }
 
-      this.app.emit('error', e, this);
+      ctx.app.emit('error', e, ctx);
     }
   };
 };

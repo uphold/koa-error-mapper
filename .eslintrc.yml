@@ -1,4 +1,5 @@
 extends: seegno
-
-rules:
-  require-yield: off
+env:
+  jasmine: true
+  jest: true
+  mocha: false
