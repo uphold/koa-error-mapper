@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 
+const Koa = require('koa');
 const errorMapper = require('../');
-const koa = require('koa');
-const request = require('co-supertest');
+const request = require('supertest');
 const util = require('util');
 
 /**
@@ -51,58 +51,58 @@ const customErrorMapper = {
  */
 
 describe('ErrorMapper', () => {
-  it('should return http error mapping if error is created using koa\'s `ctx.throw`', function *() {
-    const app = koa();
+  let app;
+  let server;
+
+  beforeEach(() => {
+    app = new Koa();
 
     app.on('error', noop);
 
-    app.use(errorMapper());
-    app.use(function *() {
-      this.throw(403);
-    });
-
-    yield request(app.listen())
-      .get('/')
-      .expect(403)
-      .expect({ code: 'forbidden', message: 'Forbidden' })
-      .end();
+    server = app.listen();
   });
 
-  it('should return generic mapping if no custom mapper is available', function *() {
-    const app = koa();
+  afterEach(() => {
+    server.close();
+  });
 
-    app.on('error', noop);
-
+  it('should return http error mapping if error is created using koa\'s `ctx.throw`', () => {
     app.use(errorMapper());
-    app.use(function *() {
+    app.use(async ctx => {
+      ctx.throw(403);
+    });
+
+    return request(server)
+      .get('/')
+      .expect(403)
+      .expect({ code: 'forbidden', message: 'Forbidden' });
+  });
+
+  it('should return generic mapping if no custom mapper is available', () => {
+    app.use(errorMapper());
+    app.use(async () => {
       throw new Error();
     });
 
-    yield request(app.listen())
+    return request(server)
       .get('/')
       .expect(500)
-      .expect({ code: 'internal_server_error', message: 'Internal Server Error' })
-      .end();
+      .expect({ code: 'internal_server_error', message: 'Internal Server Error' });
   });
 
-  it('should return generic mapping if error is subclassed and no custom mapper is available', function *() {
-    const app = koa();
-
+  it('should return generic mapping if error is subclassed and no custom mapper is available', () => {
     app.use(errorMapper());
-    app.use(function *() {
+    app.use(async () => {
       throw new CustomError();
     });
 
-    yield request(app.listen())
+    return request(server)
       .get('/')
       .expect(500)
-      .expect({ code: 'internal_server_error', message: 'Internal Server Error' })
-      .end();
+      .expect({ code: 'internal_server_error', message: 'Internal Server Error' });
   });
 
-  it('should return fallback error mapping if custom mappers are available but do not apply', function *() {
-    const app = koa();
-
+  it('should return fallback error mapping if custom mappers are available but do not apply', () => {
     function FooError() {}
 
     app.use(errorMapper([{
@@ -113,36 +113,30 @@ describe('ErrorMapper', () => {
       }
     }]));
 
-    app.use(function *() {
+    app.use(async () => {
       throw new CustomError(401, 'Foo');
     });
 
-    yield request(app.listen())
+    return request(server)
       .get('/')
       .expect(500)
-      .expect({ code: 'internal_server_error', message: 'Internal Server Error' })
-      .end();
+      .expect({ code: 'internal_server_error', message: 'Internal Server Error' });
   });
 
-  it('should return custom mapping if a custom `mapper` is available', function *() {
-    const app = koa();
-
-    app.on('error', noop);
+  it('should return custom mapping if a custom `mapper` is available', () => {
     app.use(errorMapper([customErrorMapper]));
 
-    app.use(function *() {
+    app.use(async () => {
       throw new CustomError(401, 'Foo');
     });
 
-    yield request(app.listen())
+    return request(server)
       .get('/')
       .expect(401)
-      .expect({ message: 'Foo' })
-      .end();
+      .expect({ message: 'Foo' });
   });
 
-  it('should return the first custom mapping available', function *() {
-    const app = koa();
+  it('should return the first custom mapping available', () => {
     let called = false;
 
     app.use(errorMapper([customErrorMapper, {
@@ -151,25 +145,20 @@ describe('ErrorMapper', () => {
       }
     }]));
 
-    app.use(function *() {
+    app.use(async () => {
       throw new CustomError(401, 'Foo');
     });
 
-    yield request(app.listen())
+    return request(server)
       .get('/')
       .expect(401)
       .expect({ message: 'Foo' })
       .expect(() => {
-        called.should.be.false();
-      })
-      .end();
+        expect(called).toBe(false);
+      });
   });
 
-  it('should allow recovering from mapping errors', function *() {
-    const app = koa();
-
-    app.on('error', noop);
-
+  it('should allow recovering from mapping errors', () => {
     app.use(errorMapper([{
       map(e) {
         if (e.message !== 'foobar') {
@@ -181,20 +170,17 @@ describe('ErrorMapper', () => {
       }
     }, customErrorMapper]));
 
-    app.use(function *() {
+    app.use(async () => {
       throw new Error('foobar');
     });
 
-    yield request(app.listen())
+    return request(server)
       .get('/')
       .expect(401)
-      .expect({ message: 'Foo' })
-      .end();
+      .expect({ message: 'Foo' });
   });
 
-  it('should return headers of custom mapped errors if headers are available', function *() {
-    const app = koa();
-
+  it('should return headers of custom mapped errors if headers are available', () => {
     app.use(errorMapper([{
       map(e) {
         if (!(e instanceof CustomError)) {
@@ -205,31 +191,26 @@ describe('ErrorMapper', () => {
       }
     }]));
 
-    app.use(function *() {
+    app.use(async () => {
       throw new CustomError(401);
     });
 
-    yield request(app.listen())
+    return request(server)
       .get('/')
       .expect('Foo', 'Bar')
-      .expect(401)
-      .end();
+      .expect(401);
   });
 
-  it('should return mapped `not_found` error by default', function *() {
-    const app = koa();
-
+  it('should return mapped `not_found` error by default', () => {
     app.use(errorMapper());
 
-    yield request(app.listen())
+    return request(server)
       .get('/')
       .expect(404)
-      .expect({ code: 'not_found', message: 'Not Found' })
-      .end();
+      .expect({ code: 'not_found', message: 'Not Found' });
   });
 
-  it('should emit an `error` event on app', function *() {
-    const app = koa();
+  it('should emit an `error` event on app', () => {
     let called = false;
 
     app.on('error', () => {
@@ -237,16 +218,15 @@ describe('ErrorMapper', () => {
     });
 
     app.use(errorMapper());
-    app.use(function *() {
+    app.use(async () => {
       throw new Error();
     });
 
-    yield request(app.listen())
+    return request(server)
       .get('/')
       .expect(500)
       .expect(() => {
-        called.should.be.true();
-      })
-      .end();
+        expect(called).toBe(true);
+      });
   });
 });

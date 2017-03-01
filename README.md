@@ -20,7 +20,7 @@ The only interface for a mapper is a `map()` function. A mapper should return `u
 
 ```javascript
 module.exports = {
-  map: function(e) {
+  map(e) {
     if (!(e instanceof CustomError)) {
       return;
     }
@@ -36,14 +36,14 @@ Now use the error mapper and register `CustomMapper`:
 ```javascript
 'use strict';
 
-let CustomError = require('path/to/my/custom/error');
-let CustomMapper = require('path/to/my/custom/mapper');
-let koa = require('koa');
-let app = koa();
+const CustomError = require('path/to/my/custom/error');
+const CustomMapper = require('path/to/my/custom/mapper');
+const Koa = require('koa');
+const app = new Koa();
 
 app.use(errorMapper([CustomMapper]);
 
-app.get('/', function *() {
+app.get('/', async () => {
   throw new CustomError(401, 'Ah-ah!');
 });
 
