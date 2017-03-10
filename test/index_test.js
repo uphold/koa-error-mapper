@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 
+const HttpError = require('standard-http-error');
 const errorMapper = require('../');
 const koa = require('koa');
 const request = require('co-supertest');
@@ -162,6 +163,24 @@ describe('ErrorMapper', () => {
       .expect(() => {
         called.should.be.false();
       })
+      .end();
+  });
+
+  it('should map given `HttpError` instances', function *() {
+    const app = koa();
+
+    app.on('error', noop);
+
+    app.use(errorMapper(HttpError));
+
+    app.use(function *() {
+      throw new HttpError(404);
+    });
+
+    yield request(app.listen())
+      .get('/')
+      .expect(404)
+      .expect({ code: 'not_found', message: 'Not Found' })
       .end();
   });
 

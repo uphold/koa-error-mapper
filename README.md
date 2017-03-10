@@ -61,6 +61,23 @@ Foo: Bar
 { "message": "Ah-ah!" }
 ```
 
+Support for instances of [standard-error](https://github.com/moll/js-standard-error) is also provided, just pass the error class you need to test against, for example:
+
+```js
+'use strict';
+
+const CustomMapper = require('path/to/my/custom/mapper');
+const HttpError = require('standard-http-error');
+const errorMapper = require('koa-error-mapper');
+const koa = require('koa');
+const app = koa();
+
+app.use(errorMapper([CustomMapper], HttpError);
+
+// Or just pass the error class if you don't have any custom mappers:
+app.use(errorMapper(HttpError));
+```
+
 ## Tests
 
 ```sh

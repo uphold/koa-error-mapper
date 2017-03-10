@@ -11,8 +11,13 @@ const httpErrorMapper = require('./mappers/http-error-mapper');
  * Export `ErrorMapperMiddleware`.
  */
 
-module.exports = function(mappers) {
-  mappers = (mappers || []).concat([httpErrorMapper, fallbackErrorMapper]);
+module.exports = function(mappers, HttpError) {
+  if (typeof mappers === 'function') {
+    HttpError = mappers;
+    mappers = [];
+  }
+
+  mappers = (mappers || []).concat([httpErrorMapper(HttpError), fallbackErrorMapper]);
 
   function map(e) {
     let mapping;
