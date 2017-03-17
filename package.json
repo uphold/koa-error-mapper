@@ -40,7 +40,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:uphold/koa-error-mapper"
+    "url": "https://github.com/uphold/koa-error-mapper.git"
   },
   "scripts": {
     "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
