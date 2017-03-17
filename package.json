@@ -11,7 +11,33 @@
   "homepage": "https://github.com/uphold/koa-error-mapper",
   "bugs": "https://github.com/uphold/koa-error-mapper/issues",
   "license": "MIT",
-  "author": "Uphold",
+  "contributors": [
+    {
+      "name": "Francisco Cardoso",
+      "email": "comat8se@gmail.com",
+      "url": "https://github.com/franciscocardoso"
+    },
+    {
+      "name": "Miguel Martins",
+      "email": "me@kurayama.net",
+      "url": "https://github.com/kurayama"
+    },
+    {
+      "name": "Nuno Sousa",
+      "email": "nunofgs@gmail.com",
+      "url": "https://github.com/nunofgs"
+    },
+    {
+      "name": "Ricardo Lopes",
+      "email": "mail@ricardolopes.net",
+      "url": "https://github.com/rplopes"
+    },
+    {
+      "name": "Tiago Ribeiro",
+      "email": "tiago.ribeiro@gmail.com",
+      "url": "https://github.com/fixe"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:uphold/koa-error-mapper"
