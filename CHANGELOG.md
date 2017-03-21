@@ -1,5 +1,13 @@
 # Changelog
 
+## [v4.0.0](https://github.com/uphold/koa-error-mapper/tree/v4.0.0) (2017-03-21)
+[Full Changelog](https://github.com/uphold/koa-error-mapper/compare/v3.0.0...v4.0.0)
+
+**Merged pull requests:**
+
+- Update yarn.lock [\#26](https://github.com/uphold/koa-error-mapper/pull/26) ([ruimarinho](https://github.com/ruimarinho))
+- Update koa@2 [\#25](https://github.com/uphold/koa-error-mapper/pull/25) ([kurayama](https://github.com/kurayama))
+
 ## [v3.0.0](https://github.com/uphold/koa-error-mapper/tree/v3.0.0) (2016-12-29)
 [Full Changelog](https://github.com/uphold/koa-error-mapper/compare/v2.0.0...v3.0.0)
 
