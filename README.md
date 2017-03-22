@@ -1,8 +1,10 @@
 # koa-error-mapper
 
-[![npm version][npm-image]][npm-url] [![build status][travis-image]][travis-url]
-
 `koa-error-mapper` is a middleware that handles application errors by mapping them to a custom format.
+
+## Status
+
+[![npm version][npm-image]][npm-url] [![build status][travis-image]][travis-url]
 
 ## Installation
 
