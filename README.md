@@ -1,13 +1,21 @@
 # koa-error-mapper
 
-[![build status][travis-image]][travis-url]
+[![npm version][npm-image]][npm-url] [![build status][travis-image]][travis-url]
 
-`koa-error-mapper` is a middleware to handle and normalize application errors.
+`koa-error-mapper` is a middleware that handles application errors by mapping them to a custom format.
 
 ## Installation
 
+Install the package via `yarn`:
+
 ```sh
-npm install --save git+ssh://git@github.com/uphold/koa-error-mapper
+❯ yarn add koa-error-mapper
+```
+
+or via `npm`:
+
+```sh
+❯ npm install koa-error-mapper --save
 ```
 
 ## Usage
@@ -37,11 +45,11 @@ Now use the error mapper and register `CustomMapper`:
 'use strict';
 
 const CustomError = require('path/to/my/custom/error');
-const CustomMapper = require('path/to/my/custom/mapper');
 const Koa = require('koa');
 const app = new Koa();
+const customMapper = require('path/to/my/custom/mapper');
 
-app.use(errorMapper([CustomMapper]);
+app.use(errorMapper([customMapper]);
 
 app.get('/', async () => {
   throw new CustomError(401, 'Ah-ah!');
@@ -64,18 +72,20 @@ Foo: Bar
 ## Tests
 
 ```sh
-npm test
+❯ yarn test
 ```
 
 ## Release
 
 ```sh
-npm version [<newversion> | major | minor | patch] -m "Release %s"
+❯ npm version [<new version> | major | minor | patch] -m "Release %s"
 ```
 
 ## License
 
-Private.
+MIT
 
-[travis-image]: https://magnum.travis-ci.com/uphold/koa-error-mapper.svg?token=dwsFqQ7vWTc2XyntMBxA&style=flat-square
-[travis-url]: https://magnum.travis-ci.com/uphold/koa-error-mapper
+[npm-image]: https://img.shields.io/npm/v/koa-error-mapper.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/koa-error-mapper
+[travis-image]: https://img.shields.io/travis/seegno/koa-error-mapper.svg?style=flat-square
+[travis-url]: https://img.shields.io/travis/seegno/koa-error-mapper
