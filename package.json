@@ -1,6 +1,6 @@
 {
   "name": "koa-error-mapper",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "An error mapper for Koa applications",
   "keywords": [
     "error",
