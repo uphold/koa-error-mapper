@@ -89,5 +89,5 @@ MIT
 
 [npm-image]: https://img.shields.io/npm/v/koa-error-mapper.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/koa-error-mapper
-[travis-image]: https://img.shields.io/travis/seegno/koa-error-mapper.svg?style=flat-square
-[travis-url]: https://img.shields.io/travis/seegno/koa-error-mapper
+[travis-image]: https://img.shields.io/travis/uphold/koa-error-mapper.svg?style=flat-square
+[travis-url]: https://img.shields.io/travis/uphold/koa-error-mapper
