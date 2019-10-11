@@ -17,6 +17,9 @@ module.exports = function(mappers) {
   function map(e) {
     let mapping;
 
+    // Linting disabled until Eslint resolves the issue with false positives
+    // Reference for track: https://github.com/eslint/eslint/issues/12117
+    // eslint-disable-next-line
     for (const mapper of mappers) {
       mapping = mapper.map(e);
 

@@ -68,7 +68,7 @@ describe('ErrorMapper', () => {
 
   it('should return http error mapping if error is created using koa\'s `ctx.throw`', () => {
     app.use(errorMapper());
-    app.use(async ctx => {
+    app.use(ctx => {
       ctx.throw(403);
     });
 
@@ -80,7 +80,7 @@ describe('ErrorMapper', () => {
 
   it('should return generic mapping if no custom mapper is available', () => {
     app.use(errorMapper());
-    app.use(async () => {
+    app.use(() => {
       throw new Error();
     });
 
@@ -92,7 +92,7 @@ describe('ErrorMapper', () => {
 
   it('should return generic mapping if error is subclassed and no custom mapper is available', () => {
     app.use(errorMapper());
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError();
     });
 
@@ -113,7 +113,7 @@ describe('ErrorMapper', () => {
       }
     }]));
 
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError(401, 'Foo');
     });
 
@@ -126,7 +126,7 @@ describe('ErrorMapper', () => {
   it('should return custom mapping if a custom `mapper` is available', () => {
     app.use(errorMapper([customErrorMapper]));
 
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError(401, 'Foo');
     });
 
@@ -145,7 +145,7 @@ describe('ErrorMapper', () => {
       }
     }]));
 
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError(401, 'Foo');
     });
 
@@ -170,7 +170,7 @@ describe('ErrorMapper', () => {
       }
     }, customErrorMapper]));
 
-    app.use(async () => {
+    app.use(() => {
       throw new Error('foobar');
     });
 
@@ -191,7 +191,7 @@ describe('ErrorMapper', () => {
       }
     }]));
 
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError(401);
     });
 
@@ -218,7 +218,7 @@ describe('ErrorMapper', () => {
     });
 
     app.use(errorMapper());
-    app.use(async () => {
+    app.use(() => {
       throw new Error();
     });
 
