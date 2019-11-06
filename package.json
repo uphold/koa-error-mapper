@@ -43,24 +43,27 @@
     "url": "https://github.com/uphold/koa-error-mapper.git"
   },
   "scripts": {
-    "changelog": "github-changelog-generator --owner=uphold --repo=koa-error-mapper --future-release=v$npm_package_version > CHANGELOG.md",
-    "lint": "eslint index.js mappers test",
-    "test": "jest --coverage",
-    "version": "npm run changelog && git add -A CHANGELOG.md"
-  },
-  "devDependencies": {
-    "eslint": "^3.11.1",
-    "eslint-config-seegno": "^9.0.0",
-    "http-errors": "^1.3.1",
-    "jest": "^19.0.2",
-    "koa": "^2.0.1",
-    "pre-commit": "^1.1.2",
-    "supertest": "^3.0.0"
-  },
-  "engines": {
-    "node": ">= 7.6"
+    "changelog": "uphold-scripts changelog v$npm_package_version",
+    "lint": "uphold-scripts lint",
+    "release": "uphold-scripts release",
+    "test": "uphold-scripts test",
+    "version": "uphold-scripts version"
   },
   "pre-commit": [
     "lint"
-  ]
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "mappers/**/*.js"
+    ]
+  },
+  "devDependencies": {
+    "http-errors": "^1.3.1",
+    "koa": "^2.0.1",
+    "supertest": "^3.0.0",
+    "uphold-scripts": "^0.4.0"
+  },
+  "engines": {
+    "node": ">= 7.6"
+  }
 }
