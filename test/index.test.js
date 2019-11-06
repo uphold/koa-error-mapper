@@ -66,9 +66,9 @@ describe('ErrorMapper', () => {
     server.close();
   });
 
-  it('should return http error mapping if error is created using koa\'s `ctx.throw`', () => {
+  it('should return http error mapping if error is created using koa`s `ctx.throw`', () => {
     app.use(errorMapper());
-    app.use(async ctx => {
+    app.use(ctx => {
       ctx.throw(403);
     });
 
@@ -80,7 +80,7 @@ describe('ErrorMapper', () => {
 
   it('should return generic mapping if no custom mapper is available', () => {
     app.use(errorMapper());
-    app.use(async () => {
+    app.use(() => {
       throw new Error();
     });
 
@@ -92,7 +92,7 @@ describe('ErrorMapper', () => {
 
   it('should return generic mapping if error is subclassed and no custom mapper is available', () => {
     app.use(errorMapper());
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError();
     });
 
@@ -105,15 +105,19 @@ describe('ErrorMapper', () => {
   it('should return fallback error mapping if custom mappers are available but do not apply', () => {
     function FooError() {}
 
-    app.use(errorMapper([{
-      map(e) {
-        if (!(e instanceof FooError)) {
-          return;
+    app.use(
+      errorMapper([
+        {
+          map(e) {
+            if (!(e instanceof FooError)) {
+              return;
+            }
+          }
         }
-      }
-    }]));
+      ])
+    );
 
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError(401, 'Foo');
     });
 
@@ -126,7 +130,7 @@ describe('ErrorMapper', () => {
   it('should return custom mapping if a custom `mapper` is available', () => {
     app.use(errorMapper([customErrorMapper]));
 
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError(401, 'Foo');
     });
 
@@ -139,13 +143,18 @@ describe('ErrorMapper', () => {
   it('should return the first custom mapping available', () => {
     let called = false;
 
-    app.use(errorMapper([customErrorMapper, {
-      map() {
-        called = true;
-      }
-    }]));
+    app.use(
+      errorMapper([
+        customErrorMapper,
+        {
+          map() {
+            called = true;
+          }
+        }
+      ])
+    );
 
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError(401, 'Foo');
     });
 
@@ -159,18 +168,23 @@ describe('ErrorMapper', () => {
   });
 
   it('should allow recovering from mapping errors', () => {
-    app.use(errorMapper([{
-      map(e) {
-        if (e.message !== 'foobar') {
-          return;
-        }
+    app.use(
+      errorMapper([
+        {
+          map(e) {
+            if (e.message !== 'foobar') {
+              return;
+            }
 
-        // Re-throw `Error` as `CustomError`.
-        throw new CustomError(401, 'Foo');
-      }
-    }, customErrorMapper]));
+            // Re-throw `Error` as `CustomError`.
+            throw new CustomError(401, 'Foo');
+          }
+        },
+        customErrorMapper
+      ])
+    );
 
-    app.use(async () => {
+    app.use(() => {
       throw new Error('foobar');
     });
 
@@ -181,17 +195,21 @@ describe('ErrorMapper', () => {
   });
 
   it('should return headers of custom mapped errors if headers are available', () => {
-    app.use(errorMapper([{
-      map(e) {
-        if (!(e instanceof CustomError)) {
-          return;
+    app.use(
+      errorMapper([
+        {
+          map(e) {
+            if (!(e instanceof CustomError)) {
+              return;
+            }
+
+            return { headers: { Foo: 'Bar' }, status: e.code };
+          }
         }
+      ])
+    );
 
-        return { headers: { Foo: 'Bar' }, status: e.code };
-      }
-    }]));
-
-    app.use(async () => {
+    app.use(() => {
       throw new CustomError(401);
     });
 
@@ -218,7 +236,7 @@ describe('ErrorMapper', () => {
     });
 
     app.use(errorMapper());
-    app.use(async () => {
+    app.use(() => {
       throw new Error();
     });
 

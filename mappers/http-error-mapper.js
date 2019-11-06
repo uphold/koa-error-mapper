@@ -13,7 +13,13 @@ const STATUS_CODE_TO_NAME = require('http').STATUS_CODES;
 module.exports.map = function(e) {
   const proto = Object.getPrototypeOf(e);
 
-  if (!(proto.hasOwnProperty('expose') && proto.hasOwnProperty('status') && proto.hasOwnProperty('statusCode'))) {
+  if (
+    !(
+      Object.prototype.hasOwnProperty.call(proto, 'expose') &&
+      Object.prototype.hasOwnProperty.call(proto, 'status') &&
+      Object.prototype.hasOwnProperty.call(proto, 'statusCode')
+    )
+  ) {
     return;
   }
 
