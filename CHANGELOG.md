@@ -1,5 +1,14 @@
 # Changelog
 
+## [v4.0.2](https://github.com/uphold/koa-error-mapper/releases/tag/vv4.0.2) (2020-04-21)
+- Upgrade dependencies to latest allowed versions [\#43](https://github.com/uphold/koa-error-mapper/pull/43) ([nunofgs](https://github.com/nunofgs))
+- Update http-errors@1.7.3 [\#33](https://github.com/uphold/koa-error-mapper/pull/33) ([vladanpaunovic](https://github.com/vladanpaunovic))
+- Bump sshpk from 1.11.0 to 1.16.1 [\#39](https://github.com/uphold/koa-error-mapper/pull/39) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump acorn from 5.7.3 to 5.7.4 [\#42](https://github.com/uphold/koa-error-mapper/pull/42) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update koa and supertest [\#41](https://github.com/uphold/koa-error-mapper/pull/41) ([cristianooliveira](https://github.com/cristianooliveira))
+- Add uphold-scripts to allow removal of critical vulnerabilities [\#36](https://github.com/uphold/koa-error-mapper/pull/36) ([cristianooliveira](https://github.com/cristianooliveira))
+- Fix organization in badge link [\#31](https://github.com/uphold/koa-error-mapper/pull/31) ([ruimarinho](https://github.com/ruimarinho))
+
 ## [v4.0.1](https://github.com/uphold/koa-error-mapper/releases/tag/v4.0.1) (2017-03-22)
 - Use @uphold/github-changelog-generator [\#30](https://github.com/uphold/koa-error-mapper/pull/30) ([kurayama](https://github.com/kurayama))
 - Add status header to README [\#29](https://github.com/uphold/koa-error-mapper/pull/29) ([ruimarinho](https://github.com/ruimarinho))
