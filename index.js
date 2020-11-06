@@ -14,11 +14,11 @@ const httpErrorMapper = require('./mappers/http-error-mapper');
 module.exports = function(mappers) {
   mappers = (mappers || []).concat([httpErrorMapper, fallbackErrorMapper]);
 
-  function map(e) {
+  function map(e, ctx) {
     let mapping;
 
     for (const mapper of mappers) {
-      mapping = mapper.map(e);
+      mapping = mapper.map(e, ctx);
 
       if (mapping !== undefined) {
         break;
@@ -40,9 +40,9 @@ module.exports = function(mappers) {
       let mapping;
 
       try {
-        mapping = map(e);
+        mapping = map(e, ctx);
       } catch (e) {
-        mapping = map(e);
+        mapping = map(e, ctx);
       }
 
       // Update response.
