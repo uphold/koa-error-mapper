@@ -1,6 +1,9 @@
 # Changelog
 
-## [v4.0.2](https://github.com/uphold/koa-error-mapper/releases/tag/vv4.0.2) (2020-04-21)
+## [v4.1.0](https://github.com/uphold/koa-error-mapper/releases/tag/vv4.1.0) (2020-11-06)
+- Add request context as an argument to mappers [\#46](https://github.com/uphold/koa-error-mapper/pull/46) ([TiagoLeite07](https://github.com/TiagoLeite07))
+
+## [v4.0.2](https://github.com/uphold/koa-error-mapper/releases/tag/v4.0.2) (2020-04-21)
 - Upgrade dependencies to latest allowed versions [\#43](https://github.com/uphold/koa-error-mapper/pull/43) ([nunofgs](https://github.com/nunofgs))
 - Update http-errors@1.7.3 [\#33](https://github.com/uphold/koa-error-mapper/pull/33) ([vladanpaunovic](https://github.com/vladanpaunovic))
 - Bump sshpk from 1.11.0 to 1.16.1 [\#39](https://github.com/uphold/koa-error-mapper/pull/39) ([dependabot[bot]](https://github.com/apps/dependabot))
