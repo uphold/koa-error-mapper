@@ -37,9 +37,13 @@ util.inherits(CustomError, Error);
  */
 
 const customErrorMapper = {
-  map(e) {
+  map(e, ctx) {
     if (!(e instanceof CustomError)) {
       return;
+    }
+
+    if (ctx.query.foo) {
+      return { body: { message: 'Bar' }, status: e.code };
     }
 
     return { body: { message: e.message }, status: e.code };
@@ -125,6 +129,19 @@ describe('ErrorMapper', () => {
       .get('/')
       .expect(500)
       .expect({ code: 'internal_server_error', message: 'Internal Server Error' });
+  });
+
+  it('should pass the request context to custom mapping if a custom `mapper` is available', () => {
+    app.use(errorMapper([customErrorMapper]));
+
+    app.use(() => {
+      throw new CustomError(401, 'Foo');
+    });
+
+    request(server)
+      .get('/?foo=true')
+      .expect(401)
+      .expect({ message: 'Bar' });
   });
 
   it('should return custom mapping if a custom `mapper` is available', () => {
